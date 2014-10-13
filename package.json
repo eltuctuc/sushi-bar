@@ -1,0 +1,21 @@
+{
+  "name": "SushiBar",
+  "version": "0.0.0",
+  "description": "Testanwendung mit AngularJS",
+  "main": "app/index.html",
+  "directories": {
+    "test": "test"
+  },
+  "scripts": {
+    "test": "grunt test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "C:\\\\Users\\\\Enrico\\\\Dropbox\\\\GitRepository\\\\weblabor-sushiBar"
+  },
+  "author": "Enrico Reinsdorf",
+  "license": "ISC",
+  "devDependencies": {
+    "bower": "^1.3.12"
+  }
+}

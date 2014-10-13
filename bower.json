@@ -1,0 +1,19 @@
+{
+  "name": "SushiBar",
+  "version": "0.0.0",
+  "authors": [
+    "Enrico Reinsdorf <enrico.reinsdorf@re-design.de>"
+  ],
+  "description": "Testanwendung mit AngularJS",
+  "main": "app/index.html",
+  "license": "MIT",
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "app/components",
+    "test",
+    "tests"
+  ]
+}
