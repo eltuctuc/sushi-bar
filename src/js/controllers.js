@@ -7,11 +7,11 @@ App.Controllers = angular.module('App.Controllers', []);
  */
 App.Controllers.controller('MainCtrl', [
 	'$scope', '$log', 'Booking', 'CONST',
-	
+
 	function ($scope, $log, Booking, CONST) {
-		
+
 		$log.log('Main started');
-		
+
 		/**
 		 * Maximale Anzahl an Plätzen
 		 */
@@ -26,7 +26,7 @@ App.Controllers.controller('MainCtrl', [
 		 * lädt die reservierbaren Plätze
 		 */
 		$scope.seats = Booking.getPlaces();
-		
+
 		/**
 		 * lädt die aktuellen Gruppen
 		 */
@@ -36,19 +36,19 @@ App.Controllers.controller('MainCtrl', [
 		/**
 		 * übergibt dem BookingService eine neue Gruppe
 		 */
-		$scope.addGroup = function($event) {
+		$scope.addGroup = function ($event) {
 			$log.log('Button clicked');
 			if (Booking.addGroup($scope.inputGroup)) {
-				$scope.addAlert( CONST('ALERTSUCCESS') , 'Gruppe wurde platziert!');
+				$scope.addAlert(CONST('ALERTSUCCESS'), 'Gruppe wurde platziert!');
 			} else {
-				$scope.addAlert( CONST('ALERTDANGER') , 'Es wurde kein Platz gefunden!');
+				$scope.addAlert(CONST('ALERTDANGER'), 'Es wurde kein Platz gefunden!');
 			}
 		};
 
 		/**
 		 * überibt dem BookingService die zu löschende Gruppe
 		 */
-		$scope.removeGroup = function($event, group) {
+		$scope.removeGroup = function ($event, group) {
 			$log.log('removeGroup', group);
 			if (Booking.removeGroup(group)) {
 			}
@@ -62,14 +62,14 @@ App.Controllers.controller('MainCtrl', [
 		/**
 		 * fügt der Hinweisliste eine Eintrag hinzu
 		 */
-		$scope.addAlert = function(type, msg) {
+		$scope.addAlert = function (type, msg) {
 			$scope.alerts.push({type: type, msg: msg});
 		};
 
 		/**
 		 * Löscht aus der Hinweisliste einen Eintrag
 		 */
-		$scope.closeAlert = function(index) {
+		$scope.closeAlert = function (index) {
 			$scope.alerts.splice(index, 1);
 		};
 	}
