@@ -6,11 +6,22 @@ App.Controllers = angular.module('App.Controllers', []);
  * MainCtrl
  */
 App.Controllers.controller('MainCtrl', [
-	'$scope', '$log', 'Booking', 'CONST',
+	'$scope', '$log', 'Booking', 'CONST','myDate',
 
-	function ($scope, $log, Booking, CONST) {
-
+	function ($scope, $log, Booking, CONST, myDate) {
 		$log.log('Main started');
+
+		/**
+		 * Reinitialisiert die Gruppenwerte für die Eingabe
+		 * @returns {{name: string, length: number, color: null}}
+		 */
+		var resetInputGroup = function () {
+			return {
+				name: '',
+				length: null,
+				color: null
+			};
+		};
 
 		/**
 		 * Maximale Anzahl an Plätzen
@@ -31,18 +42,26 @@ App.Controllers.controller('MainCtrl', [
 		 * lädt die aktuellen Gruppen
 		 */
 		$scope.groups = Booking.getGroups();
-		$scope.inputGroup = {};
+		$scope.inputGroup = resetInputGroup();
 
 		/**
 		 * übergibt dem BookingService eine neue Gruppe
 		 */
 		$scope.addGroup = function ($event) {
 			$log.log('Button clicked');
+
+			if($scope.inputGroup.name === '') {
+				$scope.inputGroup.name = 'von ' + myDate.getTime() + ' Uhr';
+			}
+
 			if (Booking.addGroup($scope.inputGroup)) {
 				$scope.addAlert(CONST('ALERTSUCCESS'), 'Gruppe wurde platziert!');
 			} else {
 				$scope.addAlert(CONST('ALERTDANGER'), 'Es wurde kein Platz gefunden!');
 			}
+
+			$scope.inputGroup = resetInputGroup();
+			angular.element('#inputGroupLength').trigger('focus');
 		};
 
 		/**

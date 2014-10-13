@@ -9,6 +9,8 @@ App.Services = angular.module('App.Services', []);
 App.Services.service('CONST', [
 	'$log',
 	function ($log) {
+		$log.log('enter CONST function');
+
 		var constant = [];
 
 		constant['PLACELENGTH'] = 30;
@@ -37,7 +39,7 @@ App.Services.service('Booking', [
 			places: [],
 			groups: [],
 
-			/*
+			/**
 			 * Erzeugt die Sitzplätze
 			 */
 			init: function (places) {
@@ -51,7 +53,7 @@ App.Services.service('Booking', [
 				}
 			},
 
-			/*
+			/**
 			 * Fügt Gruppe hinzu und reserviert die Plätze
 			 */
 			addGroup: function (group) {
@@ -69,7 +71,7 @@ App.Services.service('Booking', [
 				return this.findPlace(newGroup);
 			},
 
-			/*
+			/**
 			 * löscht eine Gruppe und gibt die Plätze wieder frei
 			 */
 			removeGroup: function (group) {
@@ -264,17 +266,14 @@ App.Services.service('Booking', [
 			randomColor: function () {
 				var r = Math.round((Math.random() * 102) + 102);
 				var g = Math.round((Math.random() * 102) + 102);
-				var b = Math.round((Math.random() * 102) + 102);
 				var b = 225;
 
-				var color = {
+				return {
 					r: r,
 					g: g,
 					b: b,
 					hex: '#' + r.toString(16) + g.toString(16) + b.toString(16)
 				};
-
-				return color;
 			}
 		};
 	}]);
@@ -290,5 +289,49 @@ App.Services.service('uuid4', function () {
 			var r = Math.random() * 16 | 0, v = c === 'x' ? r : (r & 0x3 | 0x8);
 			return v.toString(16);
 		});
+	};
+});
+
+/*
+ * Service date
+ */
+App.Services.factory('myDate', function () {
+
+
+	return {
+		getDate : function () {
+			var today = new Date();
+
+			var dd = today.getDate();
+			var mm = today.getMonth()+1; //January is 0!
+			var yyyy = today.getFullYear();
+
+			if(dd<10) {
+				dd='0'+dd
+			}
+			if(mm<10) {
+				mm='0'+mm
+			}
+			return dd+'. '+mm+'. '+yyyy;
+		},
+
+		getTime : function () {
+			var today = new Date();
+
+			var hh = today.getHours();
+			var mm = today.getMinutes();
+			var ss = today.getSeconds();
+
+			if(hh<10) {
+				hh='0'+hh
+			}
+			if(mm<10) {
+				mm='0'+mm
+			}
+			if(mm<10) {
+				mm='0'+mm
+			}
+			return hh+':'+mm+':'+ss;
+		}
 	};
 });
