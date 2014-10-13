@@ -16,54 +16,117 @@ module.exports = function( grunt ) {
 			' <%= pkg.author.name %>;' +
 			' Licensed <%= _.pluck(pkg.licenses, "type").join(", ") %> */'
 		},
-		concat: {
-			dist: {
-				src: ['<banner:meta.banner>', '<file_strip_banner:src/<%= pkg.name %>.js>'],
-				dest: 'dist/<%= pkg.name %>.js'
-			}
-		},
-		min: {
-			dist: {
-				src: ['<banner:meta.banner>', '<config:concat.dist.dest>'],
-				dest: 'dist/<%= pkg.name %>.min.js'
-			}
-		},
 
-		//qunit: {
-		//  files: ['test/**/*.html']
-		//},
-
-		lint: {
-			//files: ['grunt.js', 'src/**/*.js', 'test/**/*.js']
-			files: ['grunt.js', 'src/**/*.js', 'test/**/*.js']
-		},
-		watch: {
-			files: '<config:lint.files>',
-			//tasks: 'lint qunit'
-			tasks: 'lint'
-		},
-		jshint: {
-			options: {
-				curly: true,
-				eqeqeq: true,
-				immed: true,
-				latedef: true,
-				newcap: true,
-				noarg: true,
-				sub: true,
-				undef: true,
-				boss: true,
-				eqnull: true,
-				browser: true
+		clean: {
+			build: {
+				src: [ 'dist' ]
 			},
-			globals: {
-				jQuery: true
+			components: {
+				src: [ 'dist/components/*', '!dist/components/main.min.js' ]
+			},
+			stylesheets: {
+				src: [ 'dist/css/**/*.css', '!dist/css/style.css' ]
+			},
+			scripts: {
+				src: [ 'dist/js/**/*.js', '!dist/js/main.js' ]
 			}
 		},
-		uglify: {}
+
+		copy: {
+			build: {
+				cwd: 'src',
+				src: [
+					'**',
+					'!scss/**',
+					'!components/**',
+					'!lib/**',
+					'components/jquery/dist/jquery.min.js',
+					'components/angular/angular.min.js',
+					'components/angular-route/angular-route.min.js',
+					'components/angular-local-storage/dist/angular-local-storage.min.js',
+					'components/bootstrap/dis/js/bootstrap.min.js'],
+				dest: 'dist',
+				expand: true
+			}
+		},
+
+		cssmin: {
+			build: {
+				files: {
+					'dist/css/style.min.css': [ 'dist/css/**/*.css' ]
+				}
+			}
+		},
+
+		uglify: {
+			build: {
+				options: {
+					mangle: false
+				},
+				files: {
+					'dist/js/main.js': [ 'dist/js/**/*.js' ]
+				}
+			}
+		},
+
+		concat: {
+			libs: {
+				src: '**',
+				dest: 'dist/components/main.min.js'
+			}
+		},
+
+		watch: {
+			stylesheets: {
+				files: 'src/**/*.scss',
+				tasks: [ 'stylesheets' ]
+			},
+			scripts: {
+				files: 'src/**/*.js',
+				tasks: [ 'scripts' ]
+			},
+			copy: {
+				files: [ 'src/**', '!src/**/*.scss', '!src/components/**', '!src/lib/**' ],
+				tasks: [ 'copy' ]
+			}
+		}
+
 	} );
 
+	// load the tasks
+	grunt.loadNpmTasks('grunt-contrib-clean');
+	grunt.loadNpmTasks('grunt-contrib-copy');
+	grunt.loadNpmTasks('grunt-contrib-cssmin');
+	grunt.loadNpmTasks('grunt-contrib-uglify');
+	grunt.loadNpmTasks('grunt-contrib-watch');
+	grunt.loadNpmTasks('grunt-contrib-concat');
+
 	// Default task.
-	// grunt.registerTask( 'default', 'lint qunit concat min' );
-	grunt.registerTask( 'default', 'lint concat min' );
+	grunt.registerTask( 'default',
+		''
+	);
+
+	grunt.registerTask(
+		'test',
+		'Compiles',
+		[ 'clean', 'copy', 'concat:libs', 'clean:components' ]
+	);
+
+	grunt.registerTask(
+		'build',
+		'Compiles all of the assets and copies the files to the build directory.',
+		[ 'clean', 'copy', 'stylesheets', 'scripts' ]
+	);
+
+	grunt.registerTask(
+		'stylesheets',
+		'Compiles the stylesheets.',
+		[ 'cssmin', 'clean:stylesheets' ]
+	);
+
+	grunt.registerTask(
+		'scripts',
+		'Compiles the JavaScript files.',
+		[ 'uglify', 'clean:scripts' ]
+	);
 };
