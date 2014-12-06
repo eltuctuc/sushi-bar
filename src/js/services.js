@@ -296,8 +296,6 @@ App.Services.service('uuid4', function () {
  * Service date
  */
 App.Services.factory('myDate', function () {
-
-
 	return {
 		getDate : function () {
 			var today = new Date();
@@ -334,4 +332,23 @@ App.Services.factory('myDate', function () {
 			return hh+':'+mm+':'+ss;
 		}
 	};
+});
+
+/**
+ * Service LocalStorage
+ */
+App.Services.factory('LocalStorage', function () {
+	return {
+		get : function (key) {
+
+		},
+
+		set : function (key, value) {
+
+		},
+
+		remove : function (key) {
+
+		}
+	}
 });
